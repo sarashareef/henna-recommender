@@ -1,0 +1,27 @@
+<html>
+    <head>
+        <title>Henna Design Recommender</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body> 
+        <h1 class="titleTop">Henna Design Recommender</h1>
+        <input class="center-block" id="query" placeholder="What kind of henna design are you looking for">
+        <button onclick="search()">Search</button>
+        <div id="result-container"></div>
+        <script>
+            async function search() {
+                const query = document.getElementById("query").value;
+                const response = await fetch("/recommend", {
+                    method: "POST", 
+                    headers: {"Content-Type": "application/json"}, 
+                    body: JSON.stringify({query: query})
+                }); 
+                const data = await response.json(); 
+                const resultsDiv = document.getElementById("result-container");
+                resultsDiv.innerHTML = data.map(img => 
+                    `<img src="${img.url}" />`
+                ).join(''); 
+            }
+        </script>
+    </body>
+</html>
